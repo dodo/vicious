@@ -198,6 +198,10 @@ function vicious.unregister(widget, keep, reg)
         end
     end
 
+    if not reg.running then
+        return reg
+    end
+
     -- disconnect from timer
     local tm  = timers[reg.timer]
     if tm.timer.disconnect_signal then
