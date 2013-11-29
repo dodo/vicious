@@ -28,6 +28,7 @@ vicious.widgets = require("vicious.widgets")
 local timers       = {}
 local registered   = {}
 local widget_cache = {}
+local need_update  = { count = 0 }
 -- }}}
 
 
@@ -46,6 +47,12 @@ local function update(widget, reg, disablecache)
 
         return
     end
+
+    -- Clean up update queue
+    if need_update[reg] then
+        need_update.count = need_update.count - 1
+    end
+    need_update[reg] = nil
 
     local t = os.time()
     local data = {}
@@ -132,6 +139,8 @@ local function regregister(reg)
                 tm:start()
             end
             -- Initial update
+            need_update.count = need_update.count + 1
+            need_update[reg] = true
             tm:emit_signal("timeout")
         end
         reg.running = true
