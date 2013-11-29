@@ -152,12 +152,12 @@ function vicious.register(widget, wtype, format, timer, warg)
         timer  = timer,
         warg   = warg,
         widget = widget,
+    }
 
         -- Update function
-        update = function ()
-            update(widget, reg)
-        end,
-    }
+    reg.update = function ()
+        update(widget, reg)
+    end
 
     -- Default to 2s timer
     if reg.timer == nil then
